@@ -1,0 +1,86 @@
+---
+import Section from './Section.astro';
+import { hobbies } from '../data/profile';
+import { getLocale, tr, useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+
+<Section id="aficiones" number="05" jp="趣味" title={t('section.hobbies')} watermark="オタク">
+  <div class="grid">
+    {
+      hobbies.map((hobby) => (
+        <div class:list={['card', { wide: hobby.wide }]}>
+          <p class="kana" aria-hidden="true">{hobby.jp}</p>
+          <h3>{tr(hobby.title, locale)}</h3>
+          <p class="text">
+            {hobby.highlight && (
+              <>
+                <em class="highlight">{tr(hobby.highlight, locale)}</em>
+                <br />
+              </>
+            )}
+            {tr(hobby.text, locale)}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  /* móvil: una columna; tablet: dos; escritorio: tres, y las tarjetas `wide` ocupan dos */
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  @media (min-width: 600px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card.wide {
+      grid-column: span 2;
+    }
+  }
+
+  .card {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 2px solid var(--neon);
+    background: var(--panel);
+  }
+
+  .kana {
+    font-family: var(--font-jp-display);
+    font-size: 26px;
+    color: var(--neon);
+    text-shadow: 0 0 12px rgba(255, 61, 139, 0.5);
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .text {
+    color: var(--muted);
+    /* respeta los saltos de línea (\n) del texto */
+    white-space: pre-line;
+  }
+
+  .highlight {
+    font-style: italic;
+    color: var(--text-strong);
+  }
+</style>

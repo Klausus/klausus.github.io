@@ -1,0 +1,60 @@
+---
+import Section from './Section.astro';
+import { about } from '../data/profile';
+import { getLocale, tr, useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+
+<Section id="sobre-mi" number="01" jp="自己紹介" title={t('section.about')} watermark="自己紹介">
+  <div class="text">
+    {
+      about.map((column) => (
+        <div class="column">
+          {column.map((block) => (
+            <div class="block">
+              {block.label && <h3 class="label mono">// {tr(block.label, locale)}</h3>}
+              <p>{tr(block.text, locale)}</p>
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  .text {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 28px;
+    max-width: 900px;
+    color: var(--muted);
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  p {
+    /* respeta los saltos de línea (\n) del texto */
+    white-space: pre-line;
+  }
+</style>

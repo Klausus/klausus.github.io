@@ -1,0 +1,68 @@
+---
+import Section from './Section.astro';
+import { stack } from '../data/profile';
+import { getLocale, tr, useTranslations, type Text } from '../i18n/ui';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+// una lista simple es una sola línea; una lista de listas, una línea por sublista
+const toLines = (items: Text[] | Text[][]): Text[][] =>
+  items.every((item) => Array.isArray(item)) ? (items as Text[][]) : [items as Text[]];
+---
+
+<Section id="stack" number="02" jp="技術スタック" title={t('section.stack')} watermark="技術" side="left" tone="neon">
+  <div class="grid">
+    {
+      stack.map((group) => (
+        <div class="panel card">
+          <h3 class="mono">
+            <span>// {tr(group.title, locale)}</span>
+            <span class="jp">{group.jp}</span>
+          </h3>
+          <p>
+            {toLines(group.items).map((line, i) => (
+              <>
+                {i > 0 && <br />}
+                {line.map((item) => tr(item, locale)).join(' · ')}
+              </>
+            ))}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  h3 .jp {
+    white-space: nowrap;
+    letter-spacing: 0;
+    color: var(--dim);
+  }
+</style>

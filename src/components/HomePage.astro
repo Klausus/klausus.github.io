@@ -1,0 +1,26 @@
+---
+// Portada completa; la usan src/pages/index.astro (español), src/pages/ca/index.astro
+// (valenciano/catalán) y src/pages/en/index.astro (inglés)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Stack from './Stack.astro';
+import Experience from './Experience.astro';
+import Projects from './Projects.astro';
+import Hobbies from './Hobbies.astro';
+import Contact from './Contact.astro';
+---
+
+<BaseLayout>
+  <Header />
+  <main id="contenido">
+    <Hero />
+    <About />
+    <Stack />
+    <Experience />
+    <Projects />
+    <Hobbies />
+    <Contact />
+  </main>
+</BaseLayout>

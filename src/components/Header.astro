@@ -1,0 +1,149 @@
+---
+import { getLocale, homePath, locales, useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const home = homePath(locale);
+
+const links = [
+  { href: `${home}#sobre-mi`, label: t('nav.about') },
+  { href: `${home}#stack`, label: t('nav.stack') },
+  { href: `${home}#experiencia`, label: t('nav.career') },
+  { href: `${home}#proyectos`, label: t('nav.projects') },
+  { href: `${home}#aficiones`, label: t('nav.hobbies') },
+  { href: `${home}#contacto`, label: t('nav.contact') },
+];
+
+// nombre de cada idioma escrito en el idioma de la página (p. ej. en inglés: "Spanish")
+const languageName = (l: (typeof locales)[number]) => t(`lang.${l}`);
+---
+
+<header class="container header">
+  <a href={home} class="logo">&gt; klausus.dev<span class="cursor">_</span></a>
+  <div class="right">
+    <nav aria-label={t('nav.label')}>
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+    <ul class="lang mono" aria-label={t('lang.label')}>
+      {
+        locales.map((l) => (
+          <li>
+            {l === locale ? (
+              <span aria-current="true" title={languageName(l)}>
+                {l.toUpperCase()}
+              </span>
+            ) : (
+              <a
+                href={homePath(l)}
+                hreflang={l}
+                data-lang-switch
+                title={`${t('lang.switchTo')} ${languageName(l)}`}
+              >
+                {l.toUpperCase()}
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  // al cambiar de idioma, mantiene la sección en la que estaba el visitante
+  document.querySelectorAll<HTMLAnchorElement>('[data-lang-switch]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (location.hash) link.hash = location.hash;
+    });
+  });
+</script>
+
+<style>
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 24px;
+    border-bottom: 1px solid rgba(34, 225, 240, 0.25);
+  }
+
+  .logo {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+    color: var(--cyan);
+  }
+
+  .cursor {
+    color: var(--neon);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  .right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 24px;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  nav a {
+    padding: 12px 0;
+    color: var(--nav);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--neon);
+  }
+
+  .lang {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .lang a,
+  .lang span {
+    display: block;
+    min-width: 40px;
+    padding: 8px 10px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .lang a {
+    color: var(--nav);
+  }
+
+  .lang a:hover {
+    color: var(--neon);
+  }
+
+  .lang span {
+    background: var(--neon);
+    color: var(--bg);
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

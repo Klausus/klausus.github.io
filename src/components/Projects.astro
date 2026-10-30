@@ -1,0 +1,681 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageOutputFormat } from 'astro';
+import Section from './Section.astro';
+import { projects } from '../data/profile';
+import { getLocale, tr, useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+// textos de cada proyecto ya resueltos al idioma de la página
+const localized = projects.map((project) => ({
+  ...project,
+  title: tr(project.title, locale),
+  tagline: project.tagline && tr(project.tagline, locale),
+  description: tr(project.description, locale),
+  award: project.award && tr(project.award, locale),
+  status: project.status && tr(project.status, locale),
+  logo: project.logo && { ...project.logo, alt: tr(project.logo.alt, locale) },
+  gallery: project.gallery?.map((image) => ({ ...image, alt: tr(image.alt, locale) })),
+}));
+
+const featured = localized.filter((project) => project.featured);
+const others = localized.filter((project) => !project.featured);
+
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
+const formats: ImageOutputFormat[] = ['avif', 'webp'];
+
+const hostname = (url: string) => new URL(url).hostname.replace(/^www\./, '');
+---
+
+<Section id="proyectos" number="04" jp="作品" title={t('section.projects')} watermark="作品" side="left" tone="neon">
+  {
+    featured.map((project, index) => {
+      const slug = slugify(project.title);
+      const gallery = project.gallery ?? [];
+      return (
+        <div class="project">
+          <article class:list={['featured', { reverse: index % 2 === 1 }]}>
+            {gallery.length > 0 ? (
+              <div class="media carousel" data-carousel>
+                {gallery.map((image, i) => (
+                  <button
+                    type="button"
+                    class:list={['slide', { active: i === 0 }]}
+                    data-lightbox={`${slug}-${i}`}
+                    tabindex={i === 0 ? undefined : '-1'}
+                    aria-hidden={i === 0 ? undefined : 'true'}
+                  >
+                    <Picture
+                      src={image.src}
+                      alt={image.alt}
+                      formats={formats}
+                      fallbackFormat="webp"
+                      widths={[480, 800, 1200]}
+                      sizes="(min-width: 760px) 560px, 100vw"
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      style={`object-position: ${image.focus ?? 'left top'}`}
+                    />
+                    <span class="sr-only">{t('project.zoom')}</span>
+                  </button>
+                ))}
+                {gallery.length > 1 && (
+                  <div class="dots">
+                    {gallery.map((image, i) => (
+                      <button
+                        type="button"
+                        class="dot"
+                        data-slide={i}
+                        aria-label={`${t('project.show')} ${i + 1}: ${image.alt}`}
+                        aria-current={i === 0 ? 'true' : undefined}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : project.logo ? (
+              <div class="media logo">
+                <Picture
+                  src={project.logo.src}
+                  alt={project.logo.alt}
+                  formats={formats}
+                  fallbackFormat="webp"
+                  widths={[320, 480, 640]}
+                  sizes="(min-width: 760px) 360px, 80vw"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div class="media" aria-hidden="true">
+                <span class="glyph">{project.glyph}</span>
+              </div>
+            )}
+            <div class="body">
+              {(project.award || project.status) && (
+                <div class="badges">
+                  {project.status && <span class="status mono">{project.status}</span>}
+                  {project.award && <span class="award mono">{project.award}</span>}
+                </div>
+              )}
+              <h3>
+                {project.url ? (
+                  <a href={project.url} target="_blank" rel="noopener">
+                    {project.title}
+                  </a>
+                ) : (
+                  project.title
+                )}
+              </h3>
+              {project.tagline && <p class="tagline mono">{project.tagline}</p>}
+              <p class="description">{project.description}</p>
+              <p class="tags mono">{project.tags.join(' · ')}</p>
+              {project.url && (
+                <a class="visit mono" href={project.url} target="_blank" rel="noopener">
+                  {hostname(project.url)} ↗<span class="sr-only"> {t('project.newTab')}</span>
+                </a>
+              )}
+            </div>
+          </article>
+
+          {gallery.length > 1 && (
+            <ul class="gallery" aria-label={`${t('project.screenshots')} ${project.title}`}>
+              {gallery.map((image, i) => (
+                <li>
+                  <button type="button" class="thumb" data-lightbox={`${slug}-${i}`}>
+                    <Picture
+                      src={image.src}
+                      alt={image.alt}
+                      formats={formats}
+                      fallbackFormat="webp"
+                      widths={[320, 640]}
+                      sizes="(min-width: 760px) 270px, 50vw"
+                      style={`object-position: ${image.focus ?? 'left top'}`}
+                      loading="lazy"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {gallery.map((image, i) => (
+            <dialog
+              class="lightbox"
+              id={`${slug}-${i}`}
+              aria-label={image.alt}
+              data-prev={`${slug}-${(i - 1 + gallery.length) % gallery.length}`}
+              data-next={`${slug}-${(i + 1) % gallery.length}`}
+            >
+              <button type="button" class="close mono" aria-label={t('project.close')}>
+                ✕
+              </button>
+              <div class="frame">
+                <Picture
+                  src={image.src}
+                  alt={image.alt}
+                  formats={formats}
+                  fallbackFormat="webp"
+                  widths={[800, 1200, 1600]}
+                  sizes="92vw"
+                  loading="lazy"
+                />
+                {gallery.length > 1 && (
+                  <>
+                    <button type="button" class="nav prev" data-go="prev" aria-label={t('project.prev')}>
+                      ‹
+                    </button>
+                    <button type="button" class="nav next" data-go="next" aria-label={t('project.next')}>
+                      ›
+                    </button>
+                  </>
+                )}
+              </div>
+              <p class="caption mono">
+                {gallery.length > 1 && (
+                  <span class="counter">
+                    {i + 1} / {gallery.length}
+                  </span>
+                )}
+                {image.alt}
+              </p>
+            </dialog>
+          ))}
+        </div>
+      );
+    })
+  }
+  {
+    others.length > 0 && (
+      <div class="grid">
+        {others.map((project) => (
+          <article class="panel card">
+            <h3>{project.url ? <a href={project.url}>{project.title}</a> : project.title}</h3>
+            <p class="description">{project.description}</p>
+            <p class="tags mono">{project.tags.join(' · ')}</p>
+          </article>
+        ))}
+      </div>
+    )
+  }
+</Section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const dialog = document.getElementById(button.dataset.lightbox ?? '');
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
+    });
+  });
+
+  const neighbour = (dialog: HTMLDialogElement, direction: 'prev' | 'next') => {
+    const target = document.getElementById(dialog.dataset[direction] ?? '');
+    return target instanceof HTMLDialogElement && target !== dialog ? target : null;
+  };
+
+  // cambia a la captura anterior/siguiente; con `focus` se mantiene el foco en la misma flecha
+  const go = (dialog: HTMLDialogElement, direction: 'prev' | 'next', focus = false) => {
+    const target = neighbour(dialog, direction);
+    if (!target) return;
+    dialog.close();
+    target.showModal();
+    if (focus) target.querySelector<HTMLButtonElement>(`[data-go="${direction}"]`)?.focus();
+  };
+
+  document.querySelectorAll<HTMLDialogElement>('dialog.lightbox').forEach((dialog) => {
+    // clic fuera de la imagen (en el fondo) o en la X para cerrar; Esc ya lo hace el navegador
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.querySelector('.close')?.addEventListener('click', () => dialog.close());
+
+    dialog.querySelectorAll<HTMLButtonElement>('[data-go]').forEach((button) => {
+      button.addEventListener('click', () => go(dialog, button.dataset.go === 'prev' ? 'prev' : 'next', true));
+    });
+
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') go(dialog, 'prev');
+      else if (event.key === 'ArrowRight') go(dialog, 'next');
+      else return;
+      event.preventDefault();
+    });
+
+    // al abrir una captura, precarga las vecinas para que el cambio sea instantáneo
+    new MutationObserver(() => {
+      if (!dialog.open) return;
+      for (const direction of ['prev', 'next'] as const) {
+        neighbour(dialog, direction)
+          ?.querySelectorAll('img')
+          .forEach((img) => (img.loading = 'eager'));
+      }
+    }).observe(dialog, { attributes: true, attributeFilter: ['open'] });
+  });
+
+  // carrusel de la portada: rota solo, se pausa con ratón/teclado y sincroniza las miniaturas
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+    const slides = [...carousel.querySelectorAll<HTMLButtonElement>('.slide')];
+    const dots = [...carousel.querySelectorAll<HTMLButtonElement>('.dot')];
+    const thumbs = [...(carousel.closest('.project')?.querySelectorAll<HTMLButtonElement>('.thumb') ?? [])];
+    if (slides.length < 2) return;
+
+    let current = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+
+    const show = (index: number) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === current;
+        slide.classList.toggle('active', active);
+        slide.tabIndex = active ? 0 : -1;
+        slide.toggleAttribute('aria-hidden', !active);
+      });
+      dots.forEach((dot, i) => {
+        if (i === current) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      thumbs.forEach((thumb, i) => thumb.classList.toggle('active', i === current));
+    };
+
+    const stop = () => clearInterval(timer);
+    const start = () => {
+      stop();
+      if (!reduceMotion) timer = setInterval(() => show(current + 1), 4500);
+    };
+
+    dots.forEach((dot, i) =>
+      dot.addEventListener('click', () => {
+        show(i);
+        start();
+      }),
+    );
+    slides.forEach((slide) => slide.addEventListener('click', stop));
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+    carousel.addEventListener('focusin', stop);
+    carousel.addEventListener('focusout', start);
+
+    show(0);
+    start();
+  });
+</script>
+
+<style>
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .featured {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    border: 1px solid var(--neon);
+    background: rgba(16, 20, 42, 0.92);
+    box-shadow: 0 0 30px rgba(255, 61, 139, 0.2);
+  }
+
+  /* en pantallas anchas, las tarjetas alternan la imagen a izquierda y derecha */
+  @media (min-width: 760px) {
+    .featured.reverse .media {
+      order: 2;
+    }
+  }
+
+  .media.logo {
+    padding: 24px;
+  }
+
+  .media.logo :global(img) {
+    position: static;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 24px rgba(255, 61, 139, 0.35));
+  }
+
+  .media {
+    position: relative;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background-color: var(--panel-solid);
+    background-image:
+      linear-gradient(rgba(255, 61, 139, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 61, 139, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    opacity: 0;
+    cursor: zoom-in;
+    transition: opacity 0.8s ease;
+  }
+
+  .slide.active {
+    z-index: 1;
+    opacity: 1;
+  }
+
+  .media :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left top;
+    transition: transform 0.4s;
+  }
+
+  .slide:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .dots {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    gap: 2px;
+    padding: 0 6px;
+    background: rgba(9, 11, 20, 0.7);
+    transform: translateX(-50%);
+  }
+
+  .dot {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .dot::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin: auto;
+    border: 1px solid var(--cyan);
+    border-radius: 50%;
+    transition:
+      background 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .dot[aria-current='true']::before {
+    border-color: var(--neon);
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+  }
+
+  .glyph {
+    font-family: var(--font-jp-display);
+    font-size: 150px;
+    line-height: 1;
+    color: var(--neon);
+    text-shadow:
+      0 0 18px var(--neon),
+      0 0 48px rgba(255, 61, 139, 0.5);
+  }
+
+  .body {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .award {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 10px;
+    border: 1px solid var(--cyan);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+
+  .status::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  .tagline {
+    margin-top: -8px;
+    font-size: 13px;
+    color: var(--neon);
+    letter-spacing: 0.04em;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  h3 a {
+    color: inherit;
+  }
+
+  .description {
+    color: var(--muted);
+  }
+
+  .tags {
+    font-size: 13px;
+    color: var(--cyan);
+  }
+
+  .visit {
+    align-self: flex-start;
+    margin-top: 6px;
+    padding: 10px 18px;
+    border: 1px solid var(--neon);
+    color: var(--neon);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: box-shadow 0.2s;
+  }
+
+  .visit:hover {
+    color: var(--neon);
+    box-shadow: 0 0 18px rgba(255, 61, 139, 0.4);
+  }
+
+  .gallery {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: 14px;
+  }
+
+  /* en móvil sobran las miniaturas: el carrusel ya enseña las capturas */
+  @media (max-width: 759px) {
+    .gallery {
+      display: none;
+    }
+  }
+
+  .thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 1px solid var(--line);
+    background: var(--panel-solid);
+    overflow: hidden;
+    cursor: zoom-in;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .thumb:hover,
+  .thumb.active {
+    border-color: var(--neon);
+    box-shadow: 0 0 18px rgba(255, 61, 139, 0.35);
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left top;
+  }
+
+  .lightbox {
+    max-width: min(1600px, 92vw);
+    max-height: 92vh;
+    padding: 0;
+    border: 1px solid var(--neon);
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: 0 0 40px rgba(255, 61, 139, 0.35);
+    overflow: auto;
+  }
+
+  .lightbox::backdrop {
+    background: rgba(9, 11, 20, 0.88);
+  }
+
+  .lightbox :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: var(--neon);
+    color: var(--bg);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .frame {
+    position: relative;
+  }
+
+  .nav {
+    position: absolute;
+    top: 50%;
+    width: 48px;
+    height: 64px;
+    border: 1px solid var(--cyan);
+    background: rgba(9, 11, 20, 0.8);
+    color: var(--cyan);
+    font-size: 34px;
+    line-height: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .nav:hover,
+  .nav:focus-visible {
+    border-color: var(--neon);
+    color: var(--neon);
+    box-shadow: 0 0 18px rgba(255, 61, 139, 0.45);
+  }
+
+  .prev {
+    left: 12px;
+  }
+
+  .next {
+    right: 12px;
+  }
+
+  .caption {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .counter {
+    margin-right: 12px;
+    color: var(--neon);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card h3 {
+    font-size: 18px;
+  }
+</style>

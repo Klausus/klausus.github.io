@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+---
+
+<BaseLayout title="404 · Página no encontrada · klausus.dev" description="Esta página no existe.">
+  <Header />
+  <main id="contenido" class="container lost">
+    <span class="watermark" aria-hidden="true">迷子</span>
+    <p class="code mono">ERROR 404 // 迷子</p>
+    <h1 id="titulo-404">Página no encontrada</h1>
+    <p class="terminal mono">
+      $ cd <span class="path" id="ruta">/</span><br />
+      <span class="error">bash: no such file or directory</span>
+    </p>
+    <a href="/" class="btn btn-primary" id="volver">Volver al inicio</a>
+  </main>
+</BaseLayout>
+
+<script>
+  // la página es estática: la ruta real que se buscó solo se conoce en el navegador
+  const ruta = document.getElementById('ruta');
+  if (ruta) ruta.textContent = decodeURI(location.pathname);
+
+  // hay un único 404 para todos los idiomas: se traduce según el prefijo de la ruta buscada
+  const textos = {
+    ca: { titulo: 'Pàgina no trobada', volver: "Torna a l'inici" },
+    en: { titulo: 'Page not found', volver: 'Back to home' },
+  };
+  const idioma = (Object.keys(textos) as (keyof typeof textos)[]).find((l) =>
+    location.pathname.startsWith(`/${l}/`),
+  );
+  if (idioma) {
+    document.documentElement.lang = idioma;
+    document.title = `404 · ${textos[idioma].titulo} · klausus.dev`;
+    const titulo = document.getElementById('titulo-404');
+    const volver = document.getElementById('volver');
+    if (titulo) titulo.textContent = textos[idioma].titulo;
+    if (volver instanceof HTMLAnchorElement) {
+      volver.textContent = textos[idioma].volver;
+      volver.href = `/${idioma}/`;
+    }
+  }
+</script>
+
+<style>
+  .lost {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+    padding-block: 120px;
+    overflow: hidden;
+  }
+
+  .watermark {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    font-family: var(--font-jp-display);
+    font-size: clamp(140px, 24vw, 260px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 61, 139, 0.2);
+    pointer-events: none;
+  }
+
+  .code {
+    position: relative;
+    color: var(--neon);
+    font-size: 14px;
+  }
+
+  h1 {
+    position: relative;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(30px, 6vw, 52px);
+    text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(34, 225, 240, 0.55);
+  }
+
+  .terminal {
+    position: relative;
+    color: var(--cyan);
+    overflow-wrap: anywhere;
+  }
+
+  .path {
+    color: var(--text);
+  }
+
+  .error {
+    color: var(--muted);
+  }
+</style>

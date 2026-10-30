@@ -1,0 +1,200 @@
+/* Estilos comunes de los CV (cv-es.html, cv-ca.html, cv-en.html) */
+
+@font-face { font-family: 'Orbitron'; font-weight: 900; src: url('../node_modules/@fontsource/orbitron/files/orbitron-latin-900-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 400; src: url('../node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 500; src: url('../node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 700; src: url('../node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 400; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 700; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2') format('woff2'); }
+
+:root {
+  --ink: #14161f;
+  --text: #2b2f3f;
+  --muted: #5a6078;
+  --pink: #d61f69;
+  --cyan: #0b8a96;
+  --line: #e2e4ee;
+  --side: #f3f4f9;
+  --dark: #0b0d18;
+}
+
+@page { size: A4; margin: 0; }
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+
+/* ---------- cabecera ---------- */
+header {
+  background: var(--dark);
+  background-image:
+    linear-gradient(rgba(34, 225, 240, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 225, 240, 0.07) 1px, transparent 1px);
+  background-size: 7mm 7mm;
+  color: #fff;
+  padding: 8mm 14mm 7mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8mm;
+}
+
+.tagline { font-size: 7.5pt; letter-spacing: 0.12em; color: #22e1f0; margin: 0 0 2.5mm; }
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 22pt;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.alias {
+  margin: 2.5mm 0 0;
+  font-family: 'Yu Gothic', 'Meiryo', 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 12pt;
+  word-spacing: 0.3em;
+  color: #ff3d8b;
+}
+
+.role { margin: 1.5mm 0 0; font-size: 11pt; font-weight: 500; color: #e6e8f2; }
+
+.contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 8pt;
+  text-align: right;
+  line-height: 1.75;
+  color: #c3c8dd;
+  white-space: nowrap;
+}
+
+.contact a { color: #fff; text-decoration: none; }
+.contact span { color: #22e1f0; }
+
+/* ---------- cuerpo ---------- */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 64mm;
+  flex: 1;
+}
+
+main { padding: 6mm 8mm 5mm 14mm; }
+
+aside {
+  background: var(--side);
+  padding: 6mm 12mm 5mm 7mm;
+  border-left: 1px solid var(--line);
+}
+
+section + section { margin-top: 4.5mm; }
+
+h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
+  margin: 0 0 2.5mm;
+  padding-bottom: 1.2mm;
+  border-bottom: 1.5px solid var(--ink);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 10pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+h2 .num { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; color: var(--pink); }
+
+p { margin: 0; }
+
+.summary { color: var(--text); }
+
+/* experiencia */
+.job { break-inside: avoid; }
+.job + .job { margin-top: 2.8mm; }
+
+.job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
+
+.job-title { font-weight: 700; font-size: 10.2pt; color: var(--ink); }
+.job-title .at { color: var(--muted); font-weight: 500; }
+
+.dates { font-size: 7.6pt; color: var(--cyan); white-space: nowrap; }
+
+.job-meta { margin-top: 0.3mm; font-size: 8pt; color: var(--muted); }
+
+.badge {
+  display: inline-block;
+  margin-left: 1.5mm;
+  padding: 0 1.6mm;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6.6pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}
+
+.badge.now { background: var(--pink); color: #fff; }
+.badge.intern { border: 1px solid var(--cyan); color: var(--cyan); }
+.badge.award { background: #f5c542; color: var(--ink); }
+
+ul.points { margin: 0.8mm 0 0; padding-left: 4mm; }
+ul.points li { margin: 0.2mm 0; }
+ul.points li::marker { color: var(--pink); }
+
+.tech { margin-top: 1mm; font-size: 7.6pt; color: var(--cyan); }
+
+/* proyectos */
+.project + .project { margin-top: 3mm; }
+.project-title { font-weight: 700; font-size: 10pt; color: var(--ink); }
+.project-title a { color: var(--ink); text-decoration: none; }
+.project-sub { font-size: 7.6pt; color: var(--pink); }
+
+/* barra lateral */
+aside h2 { font-size: 9pt; }
+
+/* la columna lateral, algo más compacta: así cabe en una página en los tres idiomas */
+aside { font-size: 8.6pt; line-height: 1.38; }
+aside section + section { margin-top: 4mm; }
+
+.group + .group { margin-top: 2.2mm; }
+.group-title { font-size: 7.4pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); }
+.group p { margin-top: 0.5mm; }
+
+.entry + .entry { margin-top: 2mm; }
+.entry-title { font-weight: 700; color: var(--ink); }
+.entry-meta { font-size: 7.8pt; color: var(--muted); }
+
+.langs { list-style: none; margin: 0; padding: 0; }
+.langs li { display: flex; justify-content: space-between; gap: 2mm; }
+.langs li + li { margin-top: 1mm; }
+.langs .level { font-size: 7.8pt; color: var(--muted); }
+
+footer {
+  margin-top: 6mm;
+  font-size: 7pt;
+  color: var(--muted);
+}

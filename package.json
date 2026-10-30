@@ -1,0 +1,32 @@
+{
+  "name": "klausus-dev",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "cv": "node scripts/build-cv.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vue": "^7.1.2",
+    "@fontsource/dela-gothic-one": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/orbitron": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@fontsource/zen-kaku-gothic-new": "^5.3.1",
+    "astro": "^7.4.4",
+    "vue": "^3.5.44"
+  },
+  "engines": {
+    "node": ">=26.13.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^6.0.3"
+  }
+}

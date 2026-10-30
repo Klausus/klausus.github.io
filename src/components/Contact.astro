@@ -1,0 +1,108 @@
+---
+import { profile, socials } from '../data/profile';
+import { getLocale, useTranslations } from '../i18n/ui';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<section id="contacto" class="contact">
+  <span class="watermark" aria-hidden="true">連絡</span>
+  <div class="container inner">
+    <p class="label mono">06 // 連絡 <span>— $ contact --open</span></p>
+    <h2>{t('contact.title')}</h2>
+    <p class="invite jp">お気軽にご連絡ください — {t('contact.invite')}</p>
+    <a class="email mono" href={`mailto:${profile.email}`}>{profile.email}</a>
+    <ul class="socials mono">
+      {
+        socials.map((social) => (
+          <li>
+            <a href={social.url} rel="me noopener" target="_blank">
+              {social.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="footer mono">© {year} KLAUSUS · BUILT WITH ASTRO + VUE · ありがとう</p>
+  </div>
+</section>
+
+<style>
+  .contact {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid rgba(34, 225, 240, 0.25);
+  }
+
+  .watermark {
+    position: absolute;
+    right: -10px;
+    bottom: -30px;
+    font-family: var(--font-jp-display);
+    font-size: clamp(130px, 18vw, 220px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 61, 139, 0.18);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-block: 88px;
+  }
+
+  .label {
+    font-size: 14px;
+    color: var(--neon);
+  }
+
+  .label span {
+    color: var(--cyan);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(32px, 6vw, 46px);
+    text-transform: uppercase;
+    text-shadow: 0 0 18px var(--neon);
+  }
+
+  .invite {
+    font-size: 16px;
+    color: var(--dim);
+  }
+
+  .email {
+    align-self: flex-start;
+    font-size: clamp(16px, 3vw, 20px);
+    overflow-wrap: anywhere;
+  }
+
+  .socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    font-size: 15px;
+  }
+
+  .socials a {
+    display: inline-block;
+    padding: 10px 0;
+  }
+
+  .footer {
+    margin-top: 36px;
+    font-size: 12px;
+    color: var(--dim);
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+interface Props {
+  id: string;
+  number: string;
+  /** etiqueta japonesa junto al número */
+  jp: string;
+  title: string;
+  /** kanji gigante de fondo */
+  watermark: string;
+  side?: 'left' | 'right';
+  tone?: 'cyan' | 'neon';
+}
+
+const { id, number, jp, title, watermark, side = 'right', tone = 'cyan' } = Astro.props;
+---
+
+<section id={id} class="section">
+  <span class:list={['watermark', side, tone]} aria-hidden="true">{watermark}</span>
+  <div class="container inner">
+    <div class="heading">
+      <span class="label mono">{number} // {jp}</span>
+      <h2>{title}</h2>
+    </div>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    overflow: hidden;
+    scroll-margin-top: 16px;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 10px;
+    font-family: var(--font-jp-display);
+    font-size: clamp(110px, 16vw, 190px);
+    line-height: 1;
+    white-space: nowrap;
+    color: transparent;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .watermark.right {
+    right: -10px;
+  }
+
+  .watermark.left {
+    left: -10px;
+  }
+
+  .watermark.cyan {
+    -webkit-text-stroke: 1px rgba(34, 225, 240, 0.16);
+  }
+
+  .watermark.neon {
+    -webkit-text-stroke: 1px rgba(255, 61, 139, 0.16);
+  }
+
+  .inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-block: 72px;
+  }
+
+  .heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .label {
+    font-size: 14px;
+    color: var(--neon);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(24px, 4vw, 32px);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 640px) {
+    .inner {
+      padding-block: 56px;
+    }
+  }
+</style>
