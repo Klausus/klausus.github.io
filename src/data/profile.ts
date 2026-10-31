@@ -20,9 +20,9 @@ export const profile = {
   role: 'Tech Lead & Full Stack Developer',
   tagline: 'SYS:// TECH_LEAD // FULL_STACK // VALENCIA_ES',
   summary: {
-    es: 'Tech Lead y desarrollador full stack. Más de 15 años de código: de técnico de sistemas a liderar un equipo de 8 devs. Python, Django, Vue, PostgreSQL y DevOps.',
-    ca: 'Tech Lead i desenvolupador full stack. Més de 15 anys de codi: de tècnic de sistemes a liderar un equip de 8 devs. Python, Django, Vue, PostgreSQL i DevOps.',
-    en: 'Tech Lead and full stack developer. Over 15 years of code: from systems technician to leading a team of 8 devs. Python, Django, Vue, PostgreSQL and DevOps.',
+    es: 'Tech Lead y desarrollador full stack. Más de 15 años de código: de técnico de sistemas a Tech Leader de un equipo de 8 devs.\nPython, Django, Vue, PostgreSQL y DevOps.',
+    ca: "Tech Lead i desenvolupador full stack. Més de 15 anys de codi: de tècnic de sistemes a Tech Leader d'un equip de 8 devs.\nPython, Django, Vue, PostgreSQL i DevOps.",
+    en: 'Tech Lead and full stack developer. Over 15 years of code: from systems technician to Tech Leader of a team of 8 devs.\nPython, Django, Vue, PostgreSQL and DevOps.',
   } as Text,
   email: 'CristianMateuGomez@gmail.com',
   // CV en PDF de cada idioma, dentro de public/ (se regeneran con `npm run cv` desde cv/).
@@ -51,9 +51,9 @@ export const about: { label?: Text; text: Text }[][] = [
     {
       label: { es: 'Anteriormente', ca: 'Anteriorment', en: 'Previously' },
       text: {
-        es: 'Stack MEAN · Java · .NET · Robots con UiPath\nMigraciones ETL con Talend.',
-        ca: 'Stack MEAN · Java · .NET · Robots amb UiPath\nMigracions ETL amb Talend.',
-        en: 'MEAN stack · Java · .NET · UiPath robots\nETL migrations with Talend.',
+        es: 'Stack MEAN · Java · .NET · RPA con UiPath\nMigraciones ETL con Talend.',
+        ca: 'Stack MEAN · Java · .NET · RPA amb UiPath\nMigracions ETL amb Talend.',
+        en: 'MEAN stack · Java · .NET · RPA with UiPath\nETL migrations with Talend.',
       },
     },
     {
@@ -163,9 +163,9 @@ export const experience: Job[] = [
     start: '2017-12',
     end: '2018-11',
     description: {
-      es: 'Robots con UiPath. VB.NET y C#.',
-      ca: 'Robots amb UiPath. VB.NET i C#.',
-      en: 'UiPath robots. VB.NET and C#.',
+      es: 'RPA con UiPath. VB.NET y C#.',
+      ca: 'RPA amb UiPath. VB.NET i C#.',
+      en: 'RPA with UiPath. VB.NET and C#.',
     },
   },
   {

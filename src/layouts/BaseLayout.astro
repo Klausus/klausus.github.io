@@ -13,7 +13,8 @@ const t = useTranslations(locale);
 
 const {
   title = `${profile.name} (${profile.alias}) · ${profile.role}`,
-  description = tr(profile.summary, locale),
+  // los saltos de línea del resumen solo tienen sentido en la portada
+  description = tr(profile.summary, locale).replace(/\s*\n\s*/g, ' '),
 } = Astro.props;
 
 // klausus.dev es el dominio principal; la copia de klausus.github.io apunta aquí
