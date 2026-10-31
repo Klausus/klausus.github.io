@@ -32,6 +32,8 @@ Todos los textos (perfil, stack, experiencia, proyectos, aficiones, redes) está
 - **Nuevo proyecto:** añade un objeto a `projects` (hay un ejemplo comentado).
 - **CV descargable:** hay un PDF por idioma en `public/cv/` y sus rutas están en `profile.cvUrl` (con `null` se oculta el botón). Las fuentes son `cv/cv-es.html`, `cv/cv-ca.html` y `cv/cv-en.html`, con los estilos comunes en `cv/cv.css`: edítalas y ejecuta `npm run cv` para regenerar los tres PDF con Chrome (avisa si alguno no cabe en una página).
 
+- **Imagen para redes sociales:** al compartir la web se muestra `public/og-image.png` (1200×630). Su fuente es [`design/og-image.html`](design/og-image.html): edítala y ejecuta `npm run og` para regenerarla.
+
 ## Despliegue
 
 Cada push a `main` despliega en los dos sitios:

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<!-- Imagen para redes sociales (og:image, 1200×630). Para regenerarla: npm run og (crea public/og-image.png) -->
+<meta charset="utf-8">
+<title>klausus.dev · og:image</title>
+<style>
+  @font-face { font-family: 'Orbitron'; font-weight: 900; src: url('../node_modules/@fontsource/orbitron/files/orbitron-latin-900-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-weight: 400; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-weight: 700; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2') format('woff2'); }
+
+  html, body { margin: 0; }
+
+  .card {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #090b14;
+    background-image:
+      linear-gradient(rgba(34, 225, 240, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 225, 240, 0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #e6e8f2;
+  }
+
+  /* katakana gigante de fondo, solo contorno */
+  .watermark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+    font-weight: 900;
+    font-size: 250px;
+    line-height: 1;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 61, 139, 0.16);
+  }
+
+  .content { position: relative; }
+
+  .tagline { margin: 0 0 26px; font-size: 22px; letter-spacing: 0.12em; color: #22e1f0; }
+
+  h1 {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 76px;
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 0 26px rgba(34, 225, 240, 0.55);
+  }
+
+  .alias {
+    margin: 22px 0 0;
+    font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    color: #ff3d8b;
+    text-shadow: 0 0 20px #ff3d8b;
+  }
+
+  .role { margin: 18px 0 0; font-size: 28px; font-weight: 700; color: #e6e8f2; }
+
+  .stack { margin: 14px 0 0; font-size: 22px; color: #b6bcd4; }
+  .stack b { color: #22e1f0; }
+
+  .url {
+    display: inline-block;
+    margin-top: 34px;
+    padding: 10px 26px;
+    border: 2px solid #ff3d8b;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ff3d8b;
+    box-shadow: 0 0 22px rgba(255, 61, 139, 0.4);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <span class="watermark" aria-hidden="true">クラウスス</span>
+    <div class="content">
+      <p class="tagline">SYS:// TECH_LEAD // FULL_STACK // VALENCIA_ES</p>
+      <h1>Cristian<br>Mateu Gómez</h1>
+      <p class="alias">クラウスス | Klausus</p>
+      <p class="role">Tech Lead &amp; Full Stack Developer</p>
+      <p class="stack"><b>$</b> python · django · vue · postgresql · docker · ci/cd</p>
+      <span class="url">&gt; klausus.dev</span>
+    </div>
+  </div>
+</body>
+</html>
