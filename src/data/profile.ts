@@ -12,6 +12,10 @@ import muaytaxFacturas from '../assets/projects/muaytax/listado-facturas.webp';
 import muaytaxLogin from '../assets/projects/muaytax/inicio-sesion.webp';
 import muaytaxWeb from '../assets/projects/muaytax/web-publica.webp';
 import masgaMascota from '../assets/projects/masga/mascota.webp';
+import pagameMorosoPortada from '../assets/projects/pagamemoroso/portada.webp';
+import pagameMorosoAviso from '../assets/projects/pagamemoroso/aviso.webp';
+import pagameMorosoCalculadora from '../assets/projects/pagamemoroso/calculadora.webp';
+import pagameMorosoPlantillas from '../assets/projects/pagamemoroso/plantillas.webp';
 
 export const profile = {
   name: 'Cristian Mateu Gómez',
@@ -227,10 +231,17 @@ export interface Project {
   glyph?: string;
   /**
    * Capturas (en src/assets); la primera es la portada de la tarjeta.
-   * `focus` es la parte que se mantiene visible al recortar (object-position),
-   * por defecto 'left top'.
+   * En el carrusel, por defecto la imagen se recorta para llenar el hueco:
+   * `focus` es la parte que se mantiene visible (object-position, por defecto 'left top').
+   * Con `fit: 'contain'` se muestra entera, y `background` rellena el espacio sobrante.
    */
-  gallery?: { src: ImageMetadata; alt: Text; focus?: string }[];
+  gallery?: {
+    src: ImageMetadata;
+    alt: Text;
+    focus?: string;
+    fit?: 'cover' | 'contain';
+    background?: string;
+  }[];
   url?: string;
   featured?: boolean;
 }
@@ -252,6 +263,8 @@ export const projects: Project[] = [
         src: muaytaxLogin,
         alt: { es: 'Pantalla de inicio de sesión', ca: "Pantalla d'inici de sessió", en: 'Login screen' },
         focus: 'center',
+        fit: 'contain',
+        background: '#f4f8fb',
       },
       {
         src: muaytaxPanel,
@@ -260,10 +273,16 @@ export const projects: Project[] = [
           ca: 'Tauler de comptabilitat amb ingressos, despeses i beneficis',
           en: 'Accounting dashboard with income, expenses and profit',
         },
+        focus: 'center',
+        fit: 'contain',
+        background: '#f4f8fb',
       },
       {
         src: muaytaxFacturas,
         alt: { es: 'Listado de facturas', ca: 'Llistat de factures', en: 'Invoice list' },
+        focus: 'center',
+        fit: 'contain',
+        background: '#f4f8fb',
       },
       {
         src: muaytaxWeb,
@@ -272,6 +291,72 @@ export const projects: Project[] = [
           ca: 'Landing page de la botiga de serveis de Muay Tax',
           en: 'Landing page of the Muay Tax services store',
         },
+        focus: 'center',
+        fit: 'contain',
+        background: '#ffffff',
+      },
+    ],
+    featured: true,
+  },
+  {
+    title: 'Págame, moroso',
+    tagline: {
+      es: 'Recordatorios de deudas para amigos que se hacen los locos',
+      ca: 'Recordatoris de deutes per a amics que es fan els despistats',
+      en: 'Debt reminders for friends who play dumb',
+    },
+    description: {
+      es: 'Side project: recordatorios con gracia para quien te debe dinero, listos para WhatsApp, con guías, plantillas y calculadora de intereses. Sin base de datos: todo viaja en el enlace.',
+      ca: "Side project: recordatoris amb gràcia per a qui et deu diners, a punt per a WhatsApp, amb guies, plantilles i calculadora d'interessos. Sense base de dades: tot viatja en l'enllaç.",
+      en: 'Side project: witty reminders for whoever owes you money, ready for WhatsApp, with guides, templates and an interest calculator. No database: everything travels in the link.',
+    },
+    tags: ['astro', 'typescript', 'cloudflare pages', 'd1', 'vitest'],
+    status: '公開中 · Live',
+    url: 'https://pagamemoroso.com/',
+    gallery: [
+      {
+        src: pagameMorosoPortada,
+        alt: {
+          es: 'Portada: ¿Te deben pasta? Recordatorio de ejemplo para mandar por WhatsApp',
+          ca: "Portada: Et deuen diners? Recordatori d'exemple per a enviar per WhatsApp",
+          en: 'Home: Owed money? Sample reminder to send via WhatsApp',
+        },
+        focus: 'center',
+        fit: 'contain',
+        background: '#ffe24d',
+      },
+      {
+        src: pagameMorosoAviso,
+        alt: {
+          es: 'Aviso que ve el moroso al abrir el enlace',
+          ca: "Avís que veu el morós en obrir l'enllaç",
+          en: 'Notice the debtor sees when opening the link',
+        },
+        focus: 'center',
+        fit: 'contain',
+        background: '#ffe24d',
+      },
+      {
+        src: pagameMorosoCalculadora,
+        alt: {
+          es: 'Calculadora de intereses de demora',
+          ca: "Calculadora d'interessos de demora",
+          en: 'Late-payment interest calculator',
+        },
+        focus: 'center',
+        fit: 'contain',
+        background: '#ffe24d',
+      },
+      {
+        src: pagameMorosoPlantillas,
+        alt: {
+          es: 'Plantillas de mensajes y cartas de reclamación',
+          ca: 'Plantilles de missatges i cartes de reclamació',
+          en: 'Message and claim letter templates',
+        },
+        focus: 'center',
+        fit: 'contain',
+        background: '#ffe24d',
       },
     ],
     featured: true,

@@ -53,6 +53,7 @@ const hostname = (url: string) => new URL(url).hostname.replace(/^www\./, '');
                     data-lightbox={`${slug}-${i}`}
                     tabindex={i === 0 ? undefined : '-1'}
                     aria-hidden={i === 0 ? undefined : 'true'}
+                    style={image.background ? `background: ${image.background}` : undefined}
                   >
                     <Picture
                       src={image.src}
@@ -62,7 +63,7 @@ const hostname = (url: string) => new URL(url).hostname.replace(/^www\./, '');
                       widths={[480, 800, 1200]}
                       sizes="(min-width: 760px) 560px, 100vw"
                       loading={i === 0 ? 'eager' : 'lazy'}
-                      style={`object-position: ${image.focus ?? 'left top'}`}
+                      style={`object-fit: ${image.fit ?? 'cover'}; object-position: ${image.focus ?? 'left top'}`}
                     />
                     <span class="sr-only">{t('project.zoom')}</span>
                   </button>
