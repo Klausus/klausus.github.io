@@ -74,6 +74,8 @@ export const about: { label?: Text; text: Text }[][] = [
 export const socials = [
   { label: 'linkedin', url: 'https://www.linkedin.com/in/cristianmateugomez/' },
   { label: 'github', url: 'https://github.com/Klausus' },
+  { label: 'twitter', url: 'https://x.com/KlaususKun' },
+  { label: 'instagram', url: 'https://www.instagram.com/klaususkun/' },
 ];
 
 // `items` puede ser una lista simple o una lista de líneas (cada línea en su propio renglón)
